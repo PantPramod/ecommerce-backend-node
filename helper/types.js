@@ -26,7 +26,15 @@ const loginSchema= Joi.object({
     password : Joi.string().required()
 })
 
+
+const productUpdateSchema= Joi.object({
+    id:Joi.string().trim().required(),
+    title:Joi.string().trim(),
+    price:Joi.number(),
+    description:Joi.string().trim(),   
+})
 module.exports={
     registerationSchema,
-    loginSchema
+    loginSchema,
+    productUpdateSchema
 }

@@ -43,6 +43,7 @@ const errorHandler = (err, req, res, next) => {
             })
             break;
         default:
+            console.log(err)
             res.status(500).json({
                 title: "Uncaught",
                 message: err.message,

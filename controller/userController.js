@@ -4,32 +4,6 @@ const Joi = require('joi');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const schema = Joi.object({
-  name: Joi.string()
-    .alphanum()
-    .min(3)
-    .max(30)
-    .required(),
-
-  password: Joi.string()
-    .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
-
-  contact: Joi.string()
-    .alphanum()
-    .min(3)
-    .max(30)
-    .required(),
-
-  email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
-})
-
-
-// -> { value: { username: 'abc', birth_year: 1994 } }
-
-// schema.validate({});
-// -> { value: {}, error: '"username" is required' }
-
 
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await user.find();
@@ -46,12 +20,12 @@ const createUser = asyncHandler(async (req, res) => {
 
 
 
-  const schemaresponse = schema.validate(req.body);
+  // const schemaresponse = schema.validate(req.body);
   //   console.log(schemaresponse);
-  if (schemaresponse.error) {
-    res.status(400)
-    throw new Error(schemaresponse.error.message)
-  }
+  // if (schemaresponse.error) {
+  //   res.status(400)
+  //   throw new Error(schemaresponse.error.message)
+  // }
   const isAvailable = await user.findOne({ email })
   if (isAvailable) {
     res.status(400)

@@ -1,8 +1,39 @@
 const asyncHandler = require('express-async-handler')
 const product = require('../model/product')
+const storage= require('../firebase/config')
+const { ref, getDownloadURL, uploadBytes } = require("firebase/storage");
+
 
 const createProduct=asyncHandler(async(req, res)=>{
-     const newProduct = await product.create(req.body)
+      
+     const {title, price, description} = req.body
+    const images=[]
+    for(f in req.files) {
+        const file = req.files[f];
+        const timeStamp = Date.now();
+        const nt = file.originalname.split(".");
+        const name = nt[0];
+        const type = nt[1];
+
+        const filename = name + "_" + timeStamp + "." + type;
+        const imageRef = ref(storage,  "/" + filename);
+        const metaData = {
+            contentType : file.mimetype
+        }
+
+        try{
+            const snapshot = await uploadBytes(imageRef, file.buffer, metaData);
+            const url = await getDownloadURL(snapshot.ref);
+            images.push(url);
+        }catch(e){
+            res.status(400).send({
+                error : e
+            })
+        };
+    
+    }      
+    
+     const newProduct = await product.create({title,price, description, images})
      res.send(newProduct)       
 })
 
