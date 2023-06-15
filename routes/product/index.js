@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { getProducts, createProduct, getProductById, deleteProduct, updateProduct } = require('../../controller/productController');
+const { getProducts, createProduct, getProductById, deleteProduct, updateProduct, deleteImage } = require('../../controller/productController');
 const validateTokenAdmin = require('../../middleware/validateTokenHandlerAdmin');
 const validator = require('../../middleware/validator')
 const {productUpdateSchema} = require('../../helper/types')
@@ -42,42 +42,16 @@ router.patch('/update',validator(productUpdateSchema),  validateTokenAdmin, upda
 
 // @desc: Delete Product by id
 // @route: /api/product/delete/:id
-// @method: POST
+// @method: DELETE
 // @access: Protected
 
 router.delete('/delete/:id',validateTokenAdmin, deleteProduct)
 
-router.use(express.urlencoded({ limit: '5mb', extended: true }));
+// @desc: Delete Product image by id (image name)
+// @route: /api/product/delete/image/:id
+// @method: DELETE
+// @access: Protected
 
-router.post('/uploadimage',multer().array("images", 5), async(req, res)=>{
-    const urls=[]
-    for(f in req.files) {
-        const file = req.files[f];
-        const timeStamp = Date.now();
-        const nt = file.originalname.split(".");
-        const name = nt[0];
-        const type = nt[1];
-
-        const filename = name + "_" + timeStamp + "." + type;
-        const imageRef = ref(storage,  "/" + filename);
-        const metaData = {
-            contentType : file.mimetype
-        }
-
-        try{
-            const snapshot = await uploadBytes(imageRef, file.buffer, metaData);
-            const url = await getDownloadURL(snapshot.ref);
-            urls.push(url);
-        }catch(e){
-            res.status(400).send({
-                error : e
-            })
-        };
-    
-    }      
-    
-    res.send(urls)
-    
-})
+router.delete('/delete/image/:id', validateTokenAdmin, deleteImage)
 
 module.exports = router;

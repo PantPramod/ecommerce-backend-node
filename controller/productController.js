@@ -2,12 +2,16 @@ const asyncHandler = require('express-async-handler')
 const product = require('../model/product')
 const storage= require('../firebase/config')
 const { ref, getDownloadURL, uploadBytes } = require("firebase/storage");
-
+const { getStorage,  deleteObject } =  require("firebase/storage");
 
 const createProduct=asyncHandler(async(req, res)=>{
       
-     const {title, price, description} = req.body
-    const images=[]
+     const {title, price, description, stock, discount} = req.body
+    if(!title && !price && !description && !stock && !discount){
+        res.status(400)
+        throw new Error ('please fill all the fields ') 
+    }
+     const images=[]
     for(f in req.files) {
         const file = req.files[f];
         const timeStamp = Date.now();
@@ -33,7 +37,13 @@ const createProduct=asyncHandler(async(req, res)=>{
     
     }      
     
-     const newProduct = await product.create({title,price, description, images})
+     const newProduct = await product.create({title,
+        price, 
+        description,
+         images, 
+         stock,
+         ...(discount && { discount })
+         })
      res.send(newProduct)       
 })
 
@@ -48,23 +58,29 @@ const getProductById=asyncHandler(async(req, res)=>{
 })
 
 const deleteProduct=asyncHandler(async(req, res)=>{
-   const del = await product.deleteOne({id:req.params.id})   
+   const del = await product.findOneAndDelete(req.params.id)   
    res.send(del)
 })
 
 const updateProduct = asyncHandler(async(req, res)=>{
-    const {id, title, description, price} = req.body
-    const resp =await product.findByIdAndUpdate(id, {title, description, price},{
+    const {id, title, description, price, discount, stock} = req.body
+    const resp =await product.findByIdAndUpdate(id, {title, description, price, stock, discount},{
         returnOriginal: false
       }) 
     res.send(resp)
 })
 
+const deleteImage=asyncHandler(async(req, res)=>{
+    const desertRef = ref(storage, req.params.id);   
+    await deleteObject(desertRef)
+    res.status(200).send("File deleted successfully")  
+})
 
 module.exports={
     createProduct,
     getProducts,
     getProductById,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    deleteImage
 }

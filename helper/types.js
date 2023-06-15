@@ -21,20 +21,37 @@ const registerationSchema = Joi.object({
 })
 
 
-const loginSchema= Joi.object({
-    email : Joi.string().email().trim().required(),
-    password : Joi.string().required()
+const loginSchema = Joi.object({
+    email: Joi.string().email().trim().required(),
+    password: Joi.string().required()
 })
 
 
-const productUpdateSchema= Joi.object({
-    id:Joi.string().trim().required(),
-    title:Joi.string().trim(),
-    price:Joi.number(),
-    description:Joi.string().trim(),   
+const productUpdateSchema = Joi.object({
+    id: Joi.string().trim().required(),
+    title: Joi.string().trim(),
+    price: Joi.number(),
+    description: Joi.string().trim(),
+    stock: Joi.number(),
+    discount: Joi.number()
 })
-module.exports={
+
+const addCartSchema = Joi.object({
+    productId: Joi.string().required(),
+    quantity: Joi.number()
+
+})
+
+const updateCartSchema= Joi.object({
+    id:Joi.string().required(),
+    quantity:Joi.number().required(),
+    price:Joi.number().required()
+})
+
+module.exports = {
     registerationSchema,
     loginSchema,
-    productUpdateSchema
+    productUpdateSchema,
+    addCartSchema,
+    updateCartSchema
 }
