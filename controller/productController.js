@@ -126,8 +126,13 @@ const bestSeller = asyncHandler(async (req, res) => {
 })
 
 const getAllCategories=asyncHandler(async(req, res)=>{
-  const categories =await product.distinct('category')
+  const categories = await product.distinct('category')
   res.send(categories)   
+})
+
+const getProductBycategory=asyncHandler(async(req, res)=>{
+    const products = await product.find({category:req.params.id})
+    res.send(products)
 })
 
 
@@ -140,5 +145,6 @@ module.exports = {
     deleteImage,
     bestSeller,
     getDiscountItems,
-    getAllCategories
+    getAllCategories,
+    getProductBycategory
 }
