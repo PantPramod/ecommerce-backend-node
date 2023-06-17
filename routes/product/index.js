@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { getProducts, createProduct, getProductById, deleteProduct, updateProduct, deleteImage, bestSeller } = require('../../controller/productController');
+const { getProducts, createProduct, getProductById, deleteProduct, updateProduct, deleteImage, bestSeller, getDiscountItems } = require('../../controller/productController');
 const validateTokenAdmin = require('../../middleware/validateTokenHandlerAdmin');
 const validator = require('../../middleware/validator')
 const {productUpdateSchema} = require('../../helper/types')
@@ -62,5 +62,12 @@ router.delete('/delete/image/:id', validateTokenAdmin, deleteImage)
 
 router.get('/bestseller',bestSeller)
 
+
+// @desc : Best Discount Product abstracted from orders top ten
+// @route : /api/product/discountproducts
+// @method : GET
+// @access : Public
+
+router.get('/discountproducts',getDiscountItems)
 
 module.exports = router;

@@ -78,6 +78,15 @@ const deleteImage = asyncHandler(async (req, res) => {
     res.status(200).send("File deleted successfully")
 })
 
+
+const getDiscountItems = asyncHandler(async (req, res) => {
+    const moreDiscountItems = await product.find({
+        "discount": { $gt: 5 }
+    })
+    res.send(moreDiscountItems)
+})
+
+
 const bestSeller = asyncHandler(async (req, res) => {
     const bS = await orderItem.aggregate([
         {
@@ -116,6 +125,9 @@ const bestSeller = asyncHandler(async (req, res) => {
     res.send(bS)
 })
 
+
+
+
 module.exports = {
     createProduct,
     getProducts,
@@ -123,5 +135,6 @@ module.exports = {
     updateProduct,
     deleteProduct,
     deleteImage,
-    bestSeller
+    bestSeller,
+    getDiscountItems
 }
