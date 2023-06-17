@@ -65,8 +65,8 @@ const deleteProduct = asyncHandler(async (req, res) => {
 })
 
 const updateProduct = asyncHandler(async (req, res) => {
-    const { id, title, description, price, discount, stock } = req.body
-    const resp = await product.findByIdAndUpdate(id, { title, description, price, stock, discount }, {
+    const { id, title, description, price, discount, stock, category } = req.body
+    const resp = await product.findByIdAndUpdate(id, { title, description, price, stock, discount, category }, {
         returnOriginal: false
     })
     res.send(resp)

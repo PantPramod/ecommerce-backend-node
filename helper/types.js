@@ -33,7 +33,8 @@ const productUpdateSchema = Joi.object({
     price: Joi.number(),
     description: Joi.string().trim(),
     stock: Joi.number(),
-    discount: Joi.number()
+    discount: Joi.number(),
+    category: Joi.string().trim()
 })
 
 const addCartSchema = Joi.object({
