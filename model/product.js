@@ -13,10 +13,10 @@ const productSchema = new mongoose.Schema({
     },
     stock: {
         type: Number,
-        required: [true, "Product Stock is required"],       
+        required: [true, "Product Stock is required"],
     },
-    discount:{
-       type:Number 
+    discount: {
+        type: Number
     },
     description: {
         type: String,
@@ -24,6 +24,10 @@ const productSchema = new mongoose.Schema({
         trim: true
     },
     images: [String],
+    category: {
+        type: String,
+        trim: true
+    }
 },
     {
         timestamps: {

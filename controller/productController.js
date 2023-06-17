@@ -125,7 +125,10 @@ const bestSeller = asyncHandler(async (req, res) => {
     res.send(bS)
 })
 
-
+const getAllCategories=asyncHandler(async(req, res)=>{
+  const categories =await product.distinct('category')
+  res.send(categories)   
+})
 
 
 module.exports = {
@@ -136,5 +139,6 @@ module.exports = {
     deleteProduct,
     deleteImage,
     bestSeller,
-    getDiscountItems
+    getDiscountItems,
+    getAllCategories
 }
