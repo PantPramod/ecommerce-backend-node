@@ -2,8 +2,7 @@ const Joi = require('joi');
 
 const registerationSchema = Joi.object({
     name: Joi.string()
-        .alphanum()
-        .min(3)
+        .min(2)
         .max(30)
         .required(),
 
@@ -11,8 +10,7 @@ const registerationSchema = Joi.object({
         .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
 
     contact: Joi.string()
-        .alphanum()
-        .min(3)
+        .min(2)
         .max(30)
         .required(),
 
