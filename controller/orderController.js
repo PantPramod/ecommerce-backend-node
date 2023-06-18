@@ -39,11 +39,16 @@ const getOrderItemsByOrderId = asyncHandler(async (req, res) => {
 
 
 const placeOrder = asyncHandler(async (req, res) => {
-    const { totalAmount } = req.body
-
+    const { totalAmount, addressId } = req.body
+   
+    if(!totalAmount && ! addressId){
+        res.status(400)
+        throw new Error("totalAmount and addressId is required")
+    }
 
     const newOrder = await order.create({
         userId: req.user.id,
+        addressId,
         totalAmount,
     })
 

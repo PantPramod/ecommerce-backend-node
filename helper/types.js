@@ -49,10 +49,23 @@ const updateCartSchema= Joi.object({
     price:Joi.number().required()
 })
 
+const addressSchema= Joi.object({
+
+    isDefault: Joi.boolean(),
+    firstName: Joi.string().trim().required(),
+    lastName: Joi.string().trim().required(),
+    address: Joi.string().trim().required(),
+    city: Joi.string().trim().required(),
+    zip: Joi.number().required(),
+    state: Joi.string().trim().required(),
+    country: Joi.string().trim().required()
+})
+
 module.exports = {
     registerationSchema,
     loginSchema,
     productUpdateSchema,
     addCartSchema,
-    updateCartSchema
+    updateCartSchema,
+    addressSchema
 }

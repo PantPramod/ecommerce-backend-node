@@ -17,6 +17,11 @@ const orderSchema = new mongoose.Schema({
     isDelivered:{
         type:Boolean,
         default:false
+    },
+    addressId:{
+        type:mongoose.Types.ObjectId,
+        ref:"address",
+        required: [true, "address Id is required"]
     }
 },
     {
