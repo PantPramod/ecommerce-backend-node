@@ -12,8 +12,6 @@ const getAllOrders = asyncHandler(async (req, res) => {
 
 const getAllOrdersOfUser = asyncHandler(async (req, res) => {
 
-    console.log(req.user.id)
-
     const orders = await order.aggregate([
         {
             $match: { userId: new mongoose.Types.ObjectId(req.user.id) }
